@@ -1,0 +1,12 @@
+Flask==1.1.2
+Jinja2==2.11.3
+MarkupSafe==1.1.1
+Werkzeug==1.0.1
+aniso8601==8.1.1
+click==7.1.2
+flask-restful==0.3.8
+itsdangerous==1.1.0
+Flask-PyMongo==2.3.0
+PyMongo==3.11.3
+gunicorn==20.0.4
+six==1.11.0
