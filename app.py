@@ -18,9 +18,9 @@ from api.routes import create_routes
 
 
 # init flask
-flask_app = Flask(__name__)
+app = Flask(__name__)
 
-api = Api(app=flask_app)
+api = Api(app=app)
 create_routes(api=api)
 
 
@@ -28,10 +28,10 @@ MONGO_URL = os.environ.get('MONGO_URL')
 if not MONGO_URL:
     MONGO_URL = 'mongodb+srv://' + urllib.parse.quote('root') + ':' + urllib.parse.quote('aD1gEy5BsNJFG2Wy') + '@cluster0.cci75.mongodb.net/Cluster0?retryWrites=true&w=majority'
 
-db = MongoEngine(app=flask_app)
+db = MongoEngine(app=app)
 
 if __name__ == '__main__':
-    flask_app.run(debug=True)
+    app.run(debug=True)
 
 
 
