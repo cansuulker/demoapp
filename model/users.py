@@ -3,10 +3,9 @@ from mongoengine import *
 from flask_mongoengine import MongoEngine
 import mongoengine_goodjson as gj
 
+class users(Document):
 
-class users(gj.Document):
-
-    user_id = StringField(required=True,primary_key=True,unique=True)
+    user_id = StringField(required=True,primary_key=True)
     display_name = StringField(required=True)
     point = IntField()
     rank = IntField()

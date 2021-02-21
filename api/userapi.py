@@ -12,7 +12,7 @@ class usersapi(Resource):
             :returns JSON object
             GET /user/profile/{guid}
         '''
-        output = users.objects.get(id=user_id)
+        output = users.objects.get(user_id=user_id)
         return jsonify({'result': output})
 
     def delete(self, user_id: str) -> Response:
@@ -48,7 +48,7 @@ class leaderboardcountryapi(Resource):
             :returns JSON object
             GET /leaderboard/{country_iso_code}
         '''
-        output = users.objects.get(id=country)
+        output = users.objects(country=country)
         return jsonify({'result': output})
 
 class scoresubmitapi(Resource):
