@@ -17,12 +17,15 @@ from api.userapi import usersapi
 from api.routes import create_routes
 
 default_config = {'MONGODB_SETTINGS': {
-    'db': 'test_db',
-    'host': 'localhost'
- #   'port': 27017,
- #   'username': 'admin',
-  #  'password': 'password',
-  #  'authentication_source': 'admin'
+    'db': 'test',
+    'host': 'localhost',
+    'port': 27017,
+
+}}
+
+heroku_config = {'MONGODB_SETTINGS:': {
+    'db': 'gjgapi',
+    'host': 'mongodb+srv://root:aD1gEy5BsNJFG2Wy@cluster0.cci75.mongodb.net/Cluster0?retryWrites=true&w=majority'
 }}
 
 # init flask
@@ -37,7 +40,9 @@ if not MONGO_URL:
     config = default_config
     app.config.update()
 
-
+else:
+    config = heroku_config
+    app.config.update()
 
 #db = MongoEngine(app=app)
 db = MongoEngine()
