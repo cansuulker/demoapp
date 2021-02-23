@@ -97,8 +97,8 @@ class usersbulkinsertapi(Resource):
             :returns JSON object
             POST /user/bulk_insert/
         '''
-        array = csv_to_json('sample_user_data.csv',
-                            'sample_user_data.json')
+        array = csv_to_json('/resources/sample_user_data.csv',
+                            '/resources/sample_user_data.json')
         user_instances = [users(**data) for data in array]
 
         users.objects.insert(user_instances, load_bulk=False)
