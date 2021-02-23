@@ -100,6 +100,7 @@ class usersbulkinsertapi(Resource):
         array = csv_to_json('/Users/cansuulker/PycharmProjects/GJGApi/resources/sample_user_data.csv',
                             '/Users/cansuulker/PycharmProjects/GJGApi/resources/sample_user_data.json')
         user_instances = [users(**data) for data in array]
+
         users.objects.insert(user_instances, load_bulk=False)
         output = user_instances.count()
         return jsonify({'Sample user data loaded': output})
