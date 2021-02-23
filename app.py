@@ -1,6 +1,9 @@
 import os
 import mongoengine
+import ssl
 import urllib
+import uuid
+from flask_pymongo import MongoClient
 from mongoengine.connection import get_db, connect
 from flask import Flask, app
 from flask_restful import Resource, Api
@@ -30,12 +33,30 @@ heroku_config = {'MONGODB_SETTINGS:': {
 app = Flask(__name__)
 api = Api(app=app)
 
+
 #create endpoints
 create_routes(api=api)
 
 MONGO_URI = os.environ.get('MONGO_URI')
 if not MONGO_URI:
      MONGO_URI = 'mongodb+srv://' + urllib.parse.quote('admin') + ':' + urllib.parse.quote('arU1TensYAUHbzVB') + '@gjgapi.wfht1.mongodb.net/users?retryWrites=true&w=majority'
+
+
+client = MongoClient(MONGO_URI,ssl_cert_reqs=ssl.CERT_NONE)
+
+uid = uuid.uuid4()
+
+userDocument = {
+  "user_id": uid,
+  "display_name": 'gjg_0',
+  "point": 0,
+  "rank": 1,
+}
+
+db = client.gjgapi
+
+users = db.users
+users.insert_one(userDocument)
 
 print(MONGO_URI)
 '''if not MONGO_URI:
