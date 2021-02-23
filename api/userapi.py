@@ -4,59 +4,6 @@ from flask_restful import Resource
 from api.sort_ranking import sort_ranking_pipeline,insert_ranking_dict
 # project resources
 from model.users import users
-
-pipeline = [
-    {
-        "$project": {
-            "_id": 1,
-            "rank": "$rank",
-            "point": "$point",
-            "display_name": "$display_name",
-            "country": "$country",
-        }
-    },
-        {
-        "$sort": {
-            "point": -1
-        }
-    },
-
-    {
-        "$group": {
-            "_id": {},
-            'arr': {
-                "$push": {
-                    "rank": "$rank",
-                    "point": "$point",
-                    "display_name": "$display_name",
-                    "country": "$country"
-                }
-            }
-        }
-    }, {
-        "$unwind": {
-            "path": '$arr',
-            "includeArrayIndex": 'rank',
-        }
-    }, {
-        "$sort": {
-            'arr.point': -1
-        }
-    },   {
-        "$project": {
-            "_id": 0,
-            "rank": '$arr.rank',
-            "point": '$arr.point',
-            "display_name": '$arr.display_name',
-            "country": '$arr.country',
-        }
-    }
-
-]
-
-
-
-
 class usersapi(Resource):
 
     def get(self, user_id: str) -> Response:
@@ -91,7 +38,6 @@ class userscreateapi(Resource):
         post_user.rank = num_users + 1
         post_user.points = 0
         post_user.save()
-        insert_ranking_dict(post_user,0)
         output = {'user_id': str(post_user.id),
                   'display_name': str(post_user.display_name),
                   'points': post_user.points,
@@ -135,9 +81,7 @@ class scoresubmitapi(Resource):
             output = 'No user with user_id:' + uid
         else:
             users.objects(user_id=uid).update_one(points=total_points)
-            insert_ranking_dict(curr_user, total_points)
-            output = sort_ranking_pipeline(users)
-            print(output)
+            output = sort_ranking_pipeline(users,display_name)
             output = {'score_worth': score_worth,
                       'user_id':   str(uid),
                       'timestamp': str(curr_user.date_modified)
