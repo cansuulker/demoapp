@@ -21,8 +21,8 @@ default_config = {'MONGODB_SETTINGS': {
 }}
 
 heroku_config = {'MONGODB_SETTINGS:': {
-    'db': 'gjgapi',
-    'host': 'mongodb+srv://root:aD1gEy5BsNJFG2Wy@cluster0.cci75.mongodb.net/Cluster0?retryWrites=true&w=majority'
+    'db': 'users',
+    'host': 'mongodb+srv://admin:arU1TensYAUHbzVB@gjgapi.wfht1.mongodb.net/users?retryWrites=true&w=majority'
 }}
 
 # init flask
@@ -37,7 +37,6 @@ MONGO_URI = os.environ.get('MONGO_URI')
 
 print(MONGO_URI)
 if not MONGO_URI:
-    #MONGO_URL = 'mongodb+srv://' + urllib.parse.quote('root') + ':' + urllib.parse.quote('aD1gEy5BsNJFG2Wy') + '@cluster0.cci75.mongodb.net/Cluster0?retryWrites=true&w=majority'
     config = default_config
     app.config.update()
 
