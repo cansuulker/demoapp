@@ -2,6 +2,7 @@
 from flask import Response, request, jsonify
 from flask_restful import Resource
 from tools.sort_ranking import sort_ranking_pipeline
+from tools.csv_to_json import csv_to_json
 # project resources
 from model.users import users
 
@@ -10,7 +11,7 @@ class usersapi(Resource):
     def get(self, user_id: str) -> Response:
         ''' GET response for a single user in the collection
             :returns JSON object
-            GET /user/profile/{guid}
+            GET /user/profile/{guid}/
         '''
         get_user = users.objects.get(user_id=user_id)
         output = {'user_id': str(get_user.user_id),
@@ -31,7 +32,7 @@ class userscreateapi(Resource):
     def post(self) -> Response:
         ''' POST response for creating a user
             :returns JSON object
-            POST /user/create
+            POST /user/create/
         '''
         data = request.get_json(force=True)
         post_user = users(**data)
@@ -50,7 +51,7 @@ class leaderboardapi(Resource):
     def get(self) -> Response:
         ''' GET response for all users in the collection
             :returns JSON object
-            GET /leaderboard
+            GET /leaderboard/
         '''
 
         output = users.objects().order_by('rank')
@@ -60,7 +61,7 @@ class leaderboardcountryapi(Resource):
     def get(self, country: str) -> Response:
         ''' GET response for all users in the collection with specific country code
             :returns JSON object
-            GET /leaderboard/{country_iso_code}
+            GET /leaderboard/{country_iso_code}/
         '''
         output = users.objects(country=country)
         return jsonify({'result': output})
@@ -69,7 +70,7 @@ class scoresubmitapi(Resource):
     def post(self) -> Response:
         ''' POST response for updating a user's score
             :returns JSON object
-            POST /score/submit
+            POST /score/submit/
         '''
         data = request.get_json(force=True)
         display_name = data["display_name"]
@@ -94,6 +95,11 @@ class usersbulkinsertapi(Resource):
    def post(self) -> Response:
         ''' POST response for multiple users
             :returns JSON object
-            POST /user/create
+            POST /user/bulk_insert/
         '''
-
+        array = csv_to_json('/Users/cansuulker/PycharmProjects/GJGApi/resources/sample_user_data.csv',
+                            '/Users/cansuulker/PycharmProjects/GJGApi/resources/sample_user_data.json')
+        user_instances = [users(**data) for data in array]
+        users.objects.insert(user_instances, load_bulk=False)
+        output = user_instances.count()
+        return jsonify({'Sample user data loaded': output})

@@ -1,20 +1,17 @@
 import os
-import urllib.parse
-import ssl
 import mongoengine
 from mongoengine.connection import get_db, connect
 from flask import Flask, app
 from flask_restful import Resource, Api
-from flask import jsonify
-from flask_pymongo import PyMongo
 from flask import make_response
-from pymongo import MongoClient
 from flask_mongoengine import MongoEngine
 from bson.json_util import dumps
 import os
-import urllib.parse
+
+# project resources
 from api.userapi import usersapi
 from api.routes import create_routes
+
 
 default_config = {'MONGODB_SETTINGS': {
     'db': 'test',
@@ -32,6 +29,8 @@ heroku_config = {'MONGODB_SETTINGS:': {
 app = Flask(__name__)
 
 api = Api(app=app)
+
+#create endpoints
 create_routes(api=api)
 
 MONGO_URL = os.environ.get('MONGO_URL')
@@ -44,7 +43,6 @@ else:
     config = heroku_config
     app.config.update()
 
-#db = MongoEngine(app=app)
 db = MongoEngine()
 db.init_app(app)
 

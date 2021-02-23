@@ -1,3 +1,9 @@
+'''
+MongoDB Aggregation Pipeline method
+:param MongoEngine document class, display_name attribute for users()
+:returns users ranking based on points
+'''
+
 from model.users import users
 import json
 from bson import json_util

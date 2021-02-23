@@ -2,7 +2,6 @@ import uuid
 from mongoengine import *
 import datetime
 from flask_mongoengine import MongoEngine
-import mongoengine_goodjson as gj
 
 class users(Document):
 
