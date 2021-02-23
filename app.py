@@ -33,12 +33,12 @@ api = Api(app=app)
 #create endpoints
 create_routes(api=api)
 
-MONGO_URL = os.environ.get('MONGO_URL')
+MONGO_URI = os.environ.get('MONGO_URI')
 
-print(MONGO_URL)
-if not MONGO_URL:
+print(MONGO_URI)
+if not MONGO_URI:
     #MONGO_URL = 'mongodb+srv://' + urllib.parse.quote('root') + ':' + urllib.parse.quote('aD1gEy5BsNJFG2Wy') + '@cluster0.cci75.mongodb.net/Cluster0?retryWrites=true&w=majority'
-    config = heroku_config
+    config = default_config
     app.config.update()
 
 else:
