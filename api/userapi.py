@@ -1,9 +1,10 @@
 # flask packages
 from flask import Response, request, jsonify
 from flask_restful import Resource
-from api.sort_ranking import sort_ranking_pipeline,insert_ranking_dict
+from tools.sort_ranking import sort_ranking_pipeline
 # project resources
 from model.users import users
+
 class usersapi(Resource):
 
     def get(self, user_id: str) -> Response:
@@ -80,11 +81,19 @@ class scoresubmitapi(Resource):
         if curr_user is None:
             output = 'No user with user_id:' + uid
         else:
-            users.objects(user_id=uid).update_one(points=total_points)
-            output = sort_ranking_pipeline(users,display_name)
+            ranking = sort_ranking_pipeline(users,display_name) + 1
+            users.objects(user_id=uid).update_one(points=total_points, rank=ranking)
             output = {'score_worth': score_worth,
                       'user_id':   str(uid),
                       'timestamp': str(curr_user.date_modified)
                      }
         return jsonify({'result': output})
+
+
+class usersbulkinsertapi(Resource):
+   def post(self) -> Response:
+        ''' POST response for multiple users
+            :returns JSON object
+            POST /user/create
+        '''
 
