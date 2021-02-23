@@ -2,8 +2,6 @@ import os
 import mongoengine
 import ssl
 import urllib
-import uuid
-from flask_pymongo import MongoClient
 from mongoengine.connection import get_db, connect
 from flask import Flask, app
 from flask_restful import Resource, Api
@@ -12,9 +10,12 @@ from flask_mongoengine import MongoEngine
 from bson.json_util import dumps
 import os
 
+
 # project resources
 from api.userapi import usersapi
 from api.routes import create_routes
+from config import Config
+
 
 
 '''default_config = {'MONGODB_SETTINGS': {
@@ -24,15 +25,15 @@ from api.routes import create_routes
 
 }}'''
 
-heroku_config = {'MONGODB_SETTINGS:': {
+default_config = {'MONGODB_SETTINGS:': {
     'db': 'users',
     'host': 'mongodb+srv://admin:arU1TensYAUHbzVB@gjgapi.wfht1.mongodb.net/users?retryWrites=true&w=majority'
 }}
 
 # init flask
 app = Flask(__name__)
+app.config.from_object(Config)
 api = Api(app=app)
-
 
 #create endpoints
 create_routes(api=api)
@@ -42,23 +43,6 @@ if not MONGO_URI:
      MONGO_URI = 'mongodb+srv://' + urllib.parse.quote('admin') + ':' + urllib.parse.quote('arU1TensYAUHbzVB') + '@gjgapi.wfht1.mongodb.net/users?retryWrites=true&w=majority'
 
 
-client = MongoClient(MONGO_URI,ssl_cert_reqs=ssl.CERT_NONE)
-
-uid = uuid.uuid4()
-
-userDocument = {
-  "user_id": uid,
-  "display_name": 'gjg_0',
-  "point": 0,
-  "rank": 1,
-}
-
-db = client.gjgapi
-
-users = db.users
-users.insert_one(userDocument)
-
-print(MONGO_URI)
 '''if not MONGO_URI:
     config = heroku_config
     app.config.update()
@@ -68,9 +52,13 @@ else:
     app.config.update()'''
 
 db = MongoEngine()
+#db.config = {'MONGODB_SETTINGS:': {
+#    'db': 'users',
+#    'host': 'mongodb+srv://admin:arU1TensYAUHbzVB@gjgapi.wfht1.mongodb.net/users?retryWrites=true&w=majority'
+#}}
+print(db.config)
 db.init_app(app)
 
-#  mongoengine.connect(**default_config['MONGODB_SETTINGS'])
 db = get_db()
 print("db name", db.name)
 if __name__ == '__main__':
