@@ -1,0 +1,37 @@
+/* https://gjgapidemo.herokuapp.com/user/create */
+
+Request:
+{
+    "display_name" : "gjg_3",
+    "country" : "tr"
+}
+
+Response:
+{
+    "result": {
+        "display_name": "gjg_3",
+        "points": 0,
+        "rank": 3,
+        "user_id": "60359465075f3fb499809c32"
+    }
+}
+
+/* https://gjgapidemo.herokuapp.com/score/submit/ */
+
+Request:
+{
+    "display_name" : "gjg_3",
+    "score_worth" : 20
+}
+
+Response:
+{
+    "result": {
+        "score_worth": 20,
+        "timestamp": "2021-02-23 23:48:53.800000",
+        "user_id": "07225ae0-78de-46be-887d-4736a1259576"
+    }
+}
+
+
+

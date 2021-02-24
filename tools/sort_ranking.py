@@ -42,11 +42,6 @@ def sort_ranking_pipeline(model,display_name):
                 "path": "$users",
                 "includeArrayIndex": "ranking"
             }
-        },
-        {
-            "$match": {
-                "users.display_name": display_name
-            }
         }
 ]
     cursor = model.objects().aggregate(pipeline)
